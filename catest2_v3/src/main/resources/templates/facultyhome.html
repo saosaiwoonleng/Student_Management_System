@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutfaculty">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>FACULTY HOMEPAGE</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+
+<h2>Assigned Courses</h2>
+
+	<table class="table">
+		<tr align="center">
+			<td>Department</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+		</tr>
+		<tr align="center" th:each="c: ${coursePage.content}">
+			<td th:text="${c.Department.departmentName}" >Department Name</td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${c.courseId})}" th:text="${c.courseCode}"></a></td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${c.courseId})}" th:text="${c.courseName}"></a></td>
+		</tr>
+    	<tr th:if="${coursePage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/faculty/home(size=${coursePage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==coursePage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+    
+</div>
+
+</body>
+</html>

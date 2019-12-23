@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Confirm Update Faculty</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+
+<div>
+<form th:action="@{/admin/updatefaculty(id=${faculty.facultyId})}" th:method="post">
+	<h1>Faculty Information</h1>
+	<table class="table  " >
+		<tr>
+			<td>Department ID</td>
+			<td>Department Name</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${faculty.department.departmentId})}"
+        		th:text=${faculty.department.departmentId}></a>
+			</td>
+			<td th:text="${faculty.department.departmentName}" ></td>
+			<td th:text="${faculty.facultyId}" ></td>
+			<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+			<td th:text="${faculty.email}" ></td>
+			<td th:text="${faculty.mobileNum}" ></td>
+		</tr>
+	</table>
+	
+	<h1>Edit Information</h1>
+	<table class="table  ">
+		<tr>
+			<td>Department ID</td>
+			<td>Faculty ID</td>
+			<td>Faculty First Name</td>
+			<td>Faculty Middle Name</td>
+			<td>Faculty Surname</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr>
+			<td><select class="form-control" name="updatedid">
+							<option th:each="d: ${departments}" th:value="${d.departmentId}"
+								th:text="${d.departmentName}"></option>
+					</select></td>
+			<td th:text="${faculty.facultyId}">Faculty ID</td>
+			<td><input class="form-control" width="50px" type="text" name="updatefname" th:value="${faculty.firstName}" /></td>
+			<td><input class="form-control" width="50px" type="text" name="updatemname" th:value="${faculty.middleName}" /></td>
+			<td><input class="form-control" width="50px" type="text" name="updatesname" th:value="${faculty.surname}" /></td>
+			<td><input class="form-control" type="text" name="updateemail" th:value="${faculty.email}" /></td>
+			<td><input class="form-control" type="number" min="1" max="9999999" name="updatemobile" th:value="${faculty.mobileNum}" /></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2>
+    
+    <p class="alert alert-primary" role="alert">Confirm the changes before clicking update</p>
+
+	<button type="submit" name="confirm" value="yes" class="btn btn-primary">Update</button>
+</form><br>
+
+<div th:if="${error == 'yes'}">
+	<p class="alert alert-warning" role="alert" th:text="${emsg}">Error Message</p>
+</div>
+
+<p><a class="btn btn-primary" th:href="@{/admin/facultylist}">Return to list of faculties</a></p>
+</div>
+</div>
+</body>
+</html>

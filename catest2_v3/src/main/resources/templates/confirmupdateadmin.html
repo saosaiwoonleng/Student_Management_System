@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Confirm Update Admin</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+<form th:action="@{/admin/updateadmin(id=${admind.adminId})}" th:method="post">
+	<h1>Admin Information</h1>
+	<table class="table  ">
+		<tr align="center">
+			<td>Admin ID</td>
+			<td>Admin Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${admind.adminId}" ></td>
+			<td th:text="${admind.firstName}+' '+${admind.middleName}+' '+${admind.surname}"></td>
+			<td th:text="${admind.email}" ></td>
+			<td th:text="${admind.mobileNum}" ></td>
+		</tr>
+	</table>
+	
+	<h1>Edit Information</h1>
+	<table class="table  ">
+		<tr align="center">
+			<td>Admin ID</td>
+			<td>Admin First Name</td>
+			<td>Admin Middle Name</td>
+			<td>Admin Surname</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${admind.adminId}">Admin ID</td>
+			<td><input class="form-control" width="50px" type="text" name="updatefname" th:value="${admind.firstName}" /></td>
+			<td><input class="form-control" width="50px" type="text" name="updatemname" th:value="${admind.middleName}" /></td>
+			<td><input class="form-control" width="50px" type="text" name="updatesname" th:value="${admind.surname}" /></td>
+			<td><input class="form-control" type="text" name="updateemail" th:value="${admind.email}" /></td>
+			<td><input class="form-control" type="number" name="updatemobile" min="1" max="99999999" th:value="${admind.mobileNum}" /></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2><div class="alert alert-primary" role="alert">
+    <p>Confirm the changes before clicking update</p></div>
+
+	<button type="submit" name="confirm" value="yes" class="btn btn-primary">Update</button>
+</form><br>
+
+<div th:if="${error == 'yes'}">
+	<p th:text="${emsg}"class="alert alert-warning" role="alert">Error Message</p>
+</div>
+
+<p><a class="btn btn-primary" th:href="@{/admin/adminlist}">Return to list of admins</a></p>
+</div>
+
+</body>
+</html>

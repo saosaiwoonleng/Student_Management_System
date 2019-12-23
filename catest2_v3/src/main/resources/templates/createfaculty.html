@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Create Faculty</title>
+<body>
+	<div layout:fragment="content" align="center">
+		<h1>List of all faculties</h1>
+		<table class="table">
+			<tr>
+				<td>Department</td>
+				<td>Faculty ID</td>
+				<td>Faculty Name</td>
+				<td>Email</td>
+				<td>Mobile Number</td>
+			</tr>
+			<tr th:each="fac: ${facultyPage.content}">
+				<td th:text="${fac.department.departmentName}"></td>
+				<td><a
+					th:href="@{/admin/viewfaculty(viewfaculty=${fac.facultyId})}"
+					th:text=${fac.facultyId}></a></td>
+				<td
+					th:text="${fac.firstName}+' '+${fac.middleName}+' '+${fac.surname}"></td>
+				<td th:text="${fac.email}"></td>
+				<td th:text="${fac.mobileNum}"></td>
+			</tr>
+			<tr th:if="${facultyPage.totalPages > 0}" class="pagination">
+				<td th:each="pageNumber : ${pageNumbers}"><a
+					th:href="@{/admin/createfaculty(size=${facultyPage.size}, page=${pageNumber},flag='null')}"
+					th:text=${pageNumber}
+					th:class="${pageNumber==facultyPage.number + 1} ? active"></a></td>
+			</tr>
+		</table>
+
+		<form th:action="@{/admin/createfaculty}" th:method="post">
+			<h2>New Faculty Information</h2>
+			<table class="table">
+				<tr align="center">
+					<td>Department ID</td>
+					<td>Faculty First Name</td>
+					<td>Faculty Middle Name</td>
+					<td>Faculty Surname</td>
+					<td>Email</td>
+					<td>Mobile Number</td>
+				</tr>
+				<tr>
+					<td><select class="form-control" name="did">
+							<option th:each="d: ${departments}" th:value="${d.departmentId}"
+								th:text="${d.departmentName}"></option>
+					</select></td>
+					<td><input class="form-control" width="50px" type="text"
+						name="fname" /></td>
+					<td><input class="form-control" width="50px" type="text"
+						name="mname" /></td>
+					<td><input class="form-control" width="50px" type="text"
+						name="sname" /></td>
+					<td><input class="form-control" type="text" name="email" /></td>
+					<td><input class="form-control" type="number" min="1"
+						max="99999999" name="mobile" /></td>
+				</tr>
+			</table>
+			<button type="submit" name="confirm" value="yes"
+				class="btn btn-primary">Create Faculty</button>
+
+			<input type="hidden" name="flag" value="yes" />
+			<div th:if="${error == 'error'}">
+				<h2 th:text="${msg}">Error Message</h2>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

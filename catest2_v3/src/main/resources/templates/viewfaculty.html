@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>View Faculty</title>
+</head>
+
+<body>
+<div layout:fragment="content"align="center">
+
+<h1>Faculty Information</h1>
+
+<div th:if="${msg == 'found'}">
+	<table class="table  ">
+		<tr>
+			<td>Department ID</td>
+			<td>Department Name</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${faculty.department.departmentId})}"
+        		th:text=${faculty.department.departmentId}></a>
+			</td>
+			<td th:text="${faculty.department.departmentName}" ></td>
+			<td th:text="${faculty.facultyId}" ></td>
+			<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+			<td th:text="${faculty.email}" ></td>
+			<td th:text="${faculty.mobileNum}" ></td>
+		</tr>
+    </table>
+    <table>
+    <tr>
+    <td>
+<form th:action="@{/admin/delete(deleteType='faculty',id=${faculty.facultyId})}" th:method="post">
+    <button type="submit" name="confirm" value="no"class="btn btn-success">Delete faculty</button>
+</form>
+    </td>
+    <td>
+<form th:action="@{/admin/updatefaculty(id=${faculty.facultyId})}" th:method="post">
+    <button type="submit" name="confirm" value="no"class="btn btn-success">Update faculty</button>
+</form>
+     </td>
+     </tr>
+     </table>
+     <br>
+    
+    <h2>Courses Assigned</h2>
+    <div th:if="${searchcourse == 'null'}">
+    <h3>No courses assigned</h3>
+    </div>
+    <div th:if="${searchcourse == 'found'}">
+    <table class="table  ">
+		<tr>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Course Size</td>
+			<td>Course Unit</td>
+		</tr>
+		<tr th:each="cse: ${courses}">
+			<td th:text="${cse.department.departmentName}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${cse.courseId})}"
+        		th:text=${cse.courseId}></a>
+			</td>
+			<td th:text="${cse.courseCode}"></td>
+			<td th:text="${cse.courseName}"></td>
+			<td th:text="${cse.courseSize}"></td>
+			<td th:text="${cse.courseUnit}"></td>
+		</tr>
+    </table>
+    </div>
+</div>
+
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating faculty in database'"></h2>
+</div>
+     <table>
+     <tr>
+
+<td><form th:action="@{/admin/home}"><input type="submit" value="Home"class="btn btn-primary"/></form></td>
+<td><form th:action="@{/admin/facultylist}"><input type="submit" value="Return to list of faculties"class="btn btn-primary"/></form></td>
+      </tr>
+     </table>
+</div>
+</body>
+</html>

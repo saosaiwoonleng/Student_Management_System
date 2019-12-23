@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Create Department</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+	<h1>List of all departments</h1>
+	<table class="table  ">
+		<tr align="center">
+			<td>Department ID</td>
+			<td>Department Name</td>
+		</tr>
+		<tr align="center" th:each="dept: ${departmentPage.content}">
+			<td><a
+				th:href="@{/admin/viewdepartment(viewdepartment=${dept.departmentId})}"
+				th:text=${dept.departmentId}></a></td>
+			<td th:text="${dept.departmentName}"></td>
+		</tr>
+		<tr th:if="${departmentPage.totalPages > 0}" class="pagination">
+			<td th:each="pageNumber : ${pageNumbers}"><a
+				th:href="@{/admin/createdepartment(size=${departmentPage.size},page=${pageNumber},flag='null')}"
+				th:text=${pageNumber}
+				th:class="${pageNumber==departmentPage.number + 1} ? active"></a></td>
+		</tr>
+	</table>
+
+	<form th:action="@{/admin/createdepartment}" th:method="post">
+		<h2>New Department Information</h2>
+		<table class="table">
+			<tr>
+				<th align="left">Department ID</th>
+				<th align="right">Department Name</th>
+			</tr>
+			<tr>
+				<td><input type="number" min="1" name="id" /></td>
+				<td><input type="text" name="name" /></td>
+			</tr>
+			<tr>
+				<td><button type="submit" name="confirm" value="yes" class="btn btn-primary">Create
+						Department</button></td>
+			</tr>
+		</table>
+		<input type="hidden" name="flag" value="yes" />
+		<div th:if="${error == 'error'}">
+			<h2 th:text="${msg}">Error Message</h2>
+		</div>
+	</form>
+</div>
+</body>
+</html>

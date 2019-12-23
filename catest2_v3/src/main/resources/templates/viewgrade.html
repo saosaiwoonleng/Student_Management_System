@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>View Grade</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+<h1>Grade Information</h1>
+
+<div th:if="${msg == 'found'}">
+	<table class="table">
+		<tr>
+			<td>Grade ID</td>
+			<td>Grade</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+		</tr>
+		<tr align="center">
+			<td th:text="${grade.gradeId}"></td>
+			<td th:text="${grade.grade}"></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${grade.course.courseId})}"
+        		th:text=${grade.course.courseId}></a>
+			</td>
+			<td th:text="${grade.course.courseCode}"></td>
+			<td th:text="${grade.course.courseName}"></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${grade.student.studentId})}"
+        		th:text=${grade.student.studentId}></a>
+			</td>
+			<td th:text="${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></td>
+			<td>
+				<a th:href="@{/admin/viewfaculty(viewfaculty=${grade.faculty.facultyId})}"
+        		th:text=${grade.faculty.facultyId}></a>
+			</td>
+			<td th:text="${grade.faculty.firstName}+' '+${grade.faculty.middleName}+' '+${grade.faculty.surname}"></td>
+		</tr>
+    </table>
+    <table>
+<tr><td><form th:action="@{/admin/delete(deleteType='grade',id=${grade.gradeId})}" th:method="post">
+    <button type="submit" name="confirm" value="no" class="btn btn-primary">Delete grade</button>
+</form></td><td>
+<form th:action="@{/admin/updategrade(id=${grade.gradeId})}" th:method="post">
+    <button type="submit" name="confirm" value="no" class="btn btn-primary">Update grade</button>
+</form></td></tr></table>
+</div>
+
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating grade in database'"></h2>
+</div>
+<p><a class="btn btn-primary" th:href="@{/admin/gradelist}">Return to list of grades</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutstudent">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Course Application List</title>
+</head>
+<body>	
+<div layout:fragment="content" align="center">	
+
+<h1>List of Student's Applied courses</h1>
+
+<div th:if="${sort == 'all'}">
+	<table class="table">
+		<tr>
+			<td>Department</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Course StartDate</td>
+			<td>Course End Date</td>
+			<td>Course Unit</td>
+			<td>Course Size</td>
+			<td>Status</td>
+			<td>Student ID</td>
+		</tr>
+		<tr th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.course.courseCode}" ></td>
+			<td th:text="${ca.course.courseName}" ></td>
+			<td th:text="${ca.course.courseStart}" ></td>
+			<td th:text="${ca.course.courseEnd}" ></td>
+			<td th:text="${ca.course.courseUnit}" ></td>
+			<td th:text="${ca.course.courseSize}" ></td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+						
+		</tr>
+	</table>		
+	<table>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/student/courseapplicationlist(sort='all',size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+    <table>
+		<tr>
+			<td><form th:action="@{/student/courseapplicationlist(sort='approved',size=${courseApplicationPage.size}, page=${pageNumber})}"method="post"><input type="submit" value="Approved Courses" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='rejected',size=${courseApplicationPage.size}, page=${pageNumber})}"method="post"><input type="submit" value="Show all Reject" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='pending',size=${courseApplicationPage.size}, page=${pageNumber})}"method="post"><input type="submit" value="Pending Courses"class="btn btn-primary"/></form></td>
+		</tr>
+	</table>
+</div>
+
+<div th:if="${sort == 'pending'}">
+	<table class="table">
+		<tr>
+			<td>ApplicationID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.applicationId}" ></td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.course.courseId}" ></td>
+			<td th:text="${ca.course.courseCode}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+			<td><a th:href="@{/student/deleteCoures/}+${ca.applicationId}"> Delete </a></td>
+		</tr>
+	</table>		
+	<table>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/student/courseapplicationlist(sort='pending',size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+    	<table>
+		<tr>
+			<td><form th:action="@{/student/courseapplicationlist(sort='approved',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit" value="Show all approved" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='rejected',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit" value="Show all Reject" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='all',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit" value="Show all" class="btn btn-primary"/></form></td>
+		</tr>
+	</table>
+</div>
+
+<div th:if="${sort == 'approved'}">
+	<table class="table">
+		<tr>
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.applicationId}" ></td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.course.courseId}" ></td>
+			<td th:text="${ca.course.courseCode}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+			
+		</tr>
+	</table>		
+	<table>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/student/courseapplicationlist(sort='approved',size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+    	<table>
+		<tr>
+			<td><form th:action="@{/student/courseapplicationlist(sort='pending',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit"value="Show all pending" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='rejected',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit"value="Show all Reject" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='all',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit"value="Show all" class="btn btn-primary"/></form></td>
+		</tr>
+	</table>
+</div>
+<div th:if="${sort == 'rejected'}">
+	<table class="table">
+		<tr>
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.applicationId}" ></td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.course.courseId}" ></td>
+			<td th:text="${ca.course.courseCode}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+			
+		</tr>
+	</table>		
+	<table>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/student/courseapplicationlist(sort='rejected',size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+    <table>
+		<tr>
+			<td><form th:action="@{/student/courseapplicationlist(sort='pending',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit" value="Show all pending" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='rejected',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit" value="Show all Reject" class="btn btn-primary"/></form></td>
+			<td><form th:action="@{/student/courseapplicationlist(sort='all',size=${courseApplicationPage.size}, page=${pageNumber})}"><input type="submit" value="Show all" class="btn btn-primary"/></form></td>
+		</tr>
+	</table>
+</div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Confirm Update Course Application</title>
+</head>
+<body>
+<div>
+<div layout:fragment="content" align="center">
+<form th:action="@{/admin/updatecourseapplication(id=${courseApplication.applicationId})}" th:method="post">
+	<h1>Course Application Information</h1>
+	<table class="table  ">
+		<tr>
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr>
+			<td th:text="${courseApplication.applicationId}" ></td>
+			<td th:text="${courseApplication.status}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${courseApplication.course.department.departmentId})}"
+        		th:text=${courseApplication.course.department.departmentId}></a>
+			</td>
+			<td th:text="${courseApplication.course.department.departmentName}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${courseApplication.course.courseId})}"
+        		th:text=${courseApplication.course.courseId}></a>
+			</td>
+			<td th:text="${courseApplication.course.courseCode}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${courseApplication.student.studentId})}"
+        		th:text=${courseApplication.student.studentId}></a>
+			</td>
+			<td th:text="${courseApplication.student.firstName}+' '+${courseApplication.student.middleName}+' '+${courseApplication.student.surname}" ></td>
+		</tr>
+	</table>
+	
+	<h1>Edit Information</h1>
+	<table class="table  ">
+		<tr>
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Course ID</td>
+			<td>Student ID</td>
+		</tr>
+		<tr>
+			<td th:text="${courseApplication.applicationId}">Course Application ID</td>
+			<td><select class="form-control" name="updatestatus">
+							<option th:value="Pending" th:text="'Pending'"></option>
+							<option th:value="Approved" th:text="'Approved'"></option>
+							<option th:value="Rejected" th:text="'Rejected'"></option>
+					</select></td>
+			<td><select class="form-control" name="updatecid">
+							<option th:each="c: ${courses}" th:value="${c.courseId}"
+								th:text="${c.courseName}"></option>
+					</select></td>
+			<td><select class="form-control" name="updatesid">
+							<option th:each="s: ${students}" th:value="${s.studentId}"
+								th:text="${s.firstName} + ' '+${s.middleName}+ ' ' +${s.surname}"></option>
+					</select></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2><div class="alert alert-primary" role="alert">
+    <p>Confirm the changes before clicking update</p></div>
+
+	<button type="submit" name="confirm" value="yes"class="btn btn-primary">Update</button>
+</form><br>
+
+<div th:if="${error == 'yes'}">
+	<p class="alert alert-warning" role="alert"th:text="${emsg}">Error Message</p>
+</div>
+
+<p><a class="btn btn-primary"th:href="@{/admin/courseapplicationlist}">Return to list of course applications</a></p>
+</div>
+</div>
+</body>
+</html>

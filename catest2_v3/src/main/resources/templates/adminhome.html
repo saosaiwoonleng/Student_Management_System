@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Admin Home</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+<h1>Pending Course Applications</h1>
+
+<div th:if="${msg == 'found'}">
+	<table class="table">
+		<tr align="center">
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr align="center" th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.applicationId}" ></td>
+			<td th:text="${ca.status}"></td>
+			<td th:text="${ca.course.department.departmentName}"></td>
+			<td th:text="${ca.course.courseId}"></td>
+			<td th:text="${ca.course.courseCode}"></td>
+			<td th:text="${ca.student.studentId}"></td>
+			<td th:text="${ca.student.firstName}+' '+ ${ca.student.middleName}+' '+${ca.student.surname}"></td>
+			<td>
+				<form th:action="@{/admin/approvereject}" th:method="post">
+					<input type="hidden" name="id" th:value="${ca.applicationId}"/>
+					<input type="hidden" name="type" value="ca"/>
+					<button type="submit" name="approval" value="yes" class="btn btn-primary">Approve</button>
+				</form>
+			</td>
+			<td>
+				<form th:action="@{/admin/approvereject}" th:method="post">
+					<input type="hidden" name="id" th:value="${ca.applicationId}"/>
+					<input type="hidden" name="type" value="ca"/>
+					<button type="submit" name="approval" value="no"class="btn btn-primary">Reject</button>
+				</form>
+			</td>
+		</tr>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/home(size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+</div>
+<div th:unless="${msg == 'found'}">
+<p>No Pending Course Applications</p>
+</div>
+</div>
+</body>
+</html>

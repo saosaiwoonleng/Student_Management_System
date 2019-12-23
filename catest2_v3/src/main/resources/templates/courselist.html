@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Admin List</title>
+</head>
+<body>
+	<div layout:fragment="content" align="center">
+		<h1>List of all courses</h1>
+
+		<div th:if="${searched == 'null'}">
+			<table class="table  ">
+				<tr align="center">
+					<td>Department ID</td>
+					<td>Department</td>
+					<td>Course ID</td>
+					<td>Course Code</td>
+					<td>Course Name</td>
+					<td>Course Size</td>
+					<td>Course Unit</td>
+					<td>Course Start</td>
+					<td>Course End</td>
+					<td>Faculty ID</td>
+					<td>Faculty Name</td>
+				</tr>
+				<tr align="center" th:each="cse: ${coursePage.content}">
+					<td><a
+						th:href="@{/admin/viewdepartment(viewdepartment=${cse.department.departmentId})}"
+						th:text=${cse.department.departmentId}></a></td>
+					<td th:text="${cse.department.departmentName}"></td>
+					<td><a
+						th:href="@{/admin/viewcourse(viewcourse=${cse.courseId})}"
+						th:text=${cse.courseId}></a></td>
+					<td th:text="${cse.courseCode}"></td>
+					<td th:text="${cse.courseName}"></td>
+					<td th:text="${cse.courseSize}"></td>
+					<td th:text="${cse.courseUnit}"></td>
+					<td th:text="${cse.courseStart}"></td>
+					<td th:text="${cse.courseEnd}"></td>
+					<td><a
+						th:href="@{/admin/viewfaculty(viewfaculty=${cse.faculty.facultyId})}"
+						th:text=${cse.faculty.facultyId}></a></td>
+					<td
+						th:text="${cse.faculty.firstName}+' '+${cse.faculty.middleName}+' '+${cse.faculty.surname}"></td>
+				</tr>
+				<tr th:if="${coursePage.totalPages > 0}" class="pagination">
+					<td th:each="pageNumber : ${pageNumbers}"><a
+						th:href="@{/admin/courselist(size=${coursePage.size}, page=${pageNumber},name=${searched})}"
+						th:text=${pageNumber}
+						th:class="${pageNumber==coursePage.number + 1} ? active"></a></td>
+				</tr>
+			</table>
+			<br/><br/>
+			<div align="center">
+				<form th:action="@{/admin/courselist}">
+					<input type="text" th:name="name"
+						placeholder="Search course name/code" /> <input type="submit"
+						class="btn btn-primary" />
+				</form>
+			</div>
+		</div>
+
+		<div th:unless="${searched == 'null'}">
+			<table th:if="${found == 'found'}" class="table  ">
+				<tr>
+					<td th:text="'You searched for: '+ ${searched}"></td>
+				</tr>
+				<tr align="center">
+					<td>Department ID</td>
+					<td>Department</td>
+					<td>Course ID</td>
+					<td>Course Code</td>
+					<td>Course Name</td>
+					<td>Course Size</td>
+					<td>Course Unit</td>
+					<td>Course Start</td>
+					<td>Course End</td>
+					<td>Faculty ID</td>
+					<td>Faculty Name</td>
+				</tr>
+				<tr align="center" th:each="cse: ${coursePage.content}">
+					<td><a
+						th:href="@{/admin/viewdepartment(viewdepartment=${cse.department.departmentId})}"
+						th:text=${cse.department.departmentId}></a></td>
+					<td th:text="${cse.department.departmentName}"></td>
+					<td><a
+						th:href="@{/admin/viewcourse(viewcourse=${cse.courseId})}"
+						th:text=${cse.courseId}></a></td>
+					<td th:text="${cse.courseCode}"></td>
+					<td th:text="${cse.courseName}"></td>
+					<td th:text="${cse.courseSize}"></td>
+					<td th:text="${cse.courseUnit}"></td>
+					<td th:text="${cse.courseStart}"></td>
+					<td th:text="${cse.courseEnd}"></td>
+					<td><a
+						th:href="@{/admin/viewfaculty(viewfaculty=${cse.faculty.facultyId})}"
+						th:text=${cse.faculty.facultyId}></a></td>
+					<td
+						th:text="${cse.faculty.firstName}+' '+${cse.faculty.middleName}+' '+${cse.faculty.surname}"></td>
+				</tr>
+				<tr th:if="${coursePage.totalPages > 0}" class="pagination">
+					<td th:each="pageNumber : ${pageNumbers}"><a
+						th:href="@{/admin/courselist(size=${coursePage.size}, page=${pageNumber},name=${searched})}"
+						th:text=${pageNumber}
+						th:class="${pageNumber==coursePage.number + 1} ? active"></a></td>
+				</tr>
+			</table>
+			<div th:unless="${found == 'found'}">
+				<h2 th:text="'No course found for: ' + ${searched}"></h2>
+			</div>
+
+			<div align="center">
+				<form th:action="@{/admin/courselist}">
+					<input type="text" th:name="name"
+						placeholder="Search course name/code" /> <input type="submit"
+						class="btn btn-primary" />
+				</form>
+			</div>
+			<br />
+			<br />
+			<p>
+				<a th:href="@{/admin/courselist}" class="btn btn-primary">Return
+					to list of courses</a>
+			</p>
+		</div>
+
+		<br/><br/>
+		<form th:action="@{/csvcourses}" th:method="post">
+			<button type="submit" name="approval" value="yes"
+				class="btn btn-primary">Download all courses as CSV</button>
+		</form>
+	</div>
+</body>
+</html>

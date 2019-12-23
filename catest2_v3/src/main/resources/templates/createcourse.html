@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Create Course</title>
+</head>
+<body>
+	<div layout:fragment="content" align="center">
+
+	<h1>List of all courses</h1>
+	<table class="table">
+		<tr>
+			<td>Department ID</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Course Size</td>
+			<td>Course Unit</td>
+			<td>Course Start</td>
+			<td>Course End</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+		</tr>
+		<tr th:each="cse: ${coursePage.content}">
+			<td><a
+				th:href="@{/admin/viewdepartment(viewdepartment=${cse.department.departmentId})}"
+				th:text=${cse.department.departmentId}></a></td>
+			<td th:text="${cse.department.departmentName}"></td>
+			<td><a
+				th:href="@{/admin/viewcourse(viewcourse=${cse.courseId})}"
+				th:text=${cse.courseId}></a></td>
+			<td th:text="${cse.courseCode}"></td>
+			<td th:text="${cse.courseName}"></td>
+			<td th:text="${cse.courseSize}"></td>
+			<td th:text="${cse.courseUnit}"></td>
+			<td th:text="${cse.courseStart}"></td>
+			<td th:text="${cse.courseEnd}"></td>
+			<td><a
+				th:href="@{/admin/viewfaculty(viewfaculty=${cse.faculty.facultyId})}"
+				th:text=${cse.faculty.facultyId}></a></td>
+			<td
+				th:text="${cse.faculty.firstName}+' '+${cse.faculty.middleName}+' '+${cse.faculty.surname}"></td>
+		</tr>
+		<tr th:if="${coursePage.totalPages > 0}" class="pagination">
+			<td th:each="pageNumber : ${pageNumbers}"><a
+				th:href="@{/admin/createcourse(size=${coursePage.size}, page=${pageNumber},flag='null')}"
+				th:text=${pageNumber}
+				th:class="${pageNumber==coursePage.number + 1} ? active"></a></td>
+		</tr>
+	</table>
+
+	<form th:action="@{/admin/createcourse}" th:method="post">
+		<h2>New Course Information</h2>
+		<table class="table">
+			<tr align="center">
+				<td>Department Name</td>
+				<td>Course Code</td>
+				<td>Course Name</td>
+				<td>Course Size</td>
+				<td>Course Unit</td>
+				<td>Course Start</td>
+				<td>Course End</td>
+				<td>Faculty Name</td>
+			</tr>
+			<tr>
+				<td>
+					<select class="form-control" name="did" >
+						<option th:each="d: ${departments}" th:value="${d.departmentId}" th:text="${d.departmentName}"></option>
+					</select>
+				</td>
+				<td><input class="form-control" width="40px" type="text" name="code" /></td>
+				<td><input class="form-control" type="text" name="name" /></td>
+				<td><input class="form-control" width="40px" type="number" min="1" name="csize" /></td>
+				<td><input class="form-control" width="40px" type="number" min="1" name="unit" /></td>
+				<td><input class="form-control" width="50px" type="date" name="start" /></td>
+				<td><input class="form-control" width="50px" type="date" name="end" /></td>
+				<td>
+					<select class="form-control" name="fid" >
+						<option th:each="f: ${faculties}" th:value="${f.facultyId}" th:text="${f.firstName}+' ' +${f.middleName}+ ' ' + ${f.surname}"></option>
+					</select>
+				</td>
+			</tr>
+		</table>			
+				<button type="submit" name="confirm" value="yes" class="btn btn-primary">Create Course</button>
+			
+
+		<input type="hidden" name="flag" value="yes" />
+		<div th:if="${error == 'error'}">
+			<h2 th:text="${msg}">Error Message</h2>
+		</div>
+	</form>
+
+	</div>
+</body>
+</html>

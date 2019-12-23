@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Create User</title>
+<body>
+	<div layout:fragment="content" align="center">
+		<div th:if="${type == 'student'}">
+
+			<h2>New Student Information</h2>
+			<table class="table  ">
+				<tr align="center">
+					<td>Student ID</td>
+					<td>Student First Name</td>
+					<td>Student Middle Name</td>
+					<td>Student Surname</td>
+					<td>Age</td>
+					<td>Gender</td>
+					<td>Email</td>
+					<td>Mobile Number</td>
+					<td>Address</td>
+				</tr>
+				<tr>
+					<td th:text="${student.studentId}"></td>
+					<td th:text="${student.firstName}"></td>
+					<td th:text="${student.middleName}"></td>
+					<td th:text="${student.surname}"></td>
+					<td th:text="${student.age}"></td>
+					<td th:text="${student.gender}"></td>
+					<td th:text="${student.email}"></td>
+					<td th:text="${student.mobileNum}"></td>
+					<td th:text="${student.address}"></td>
+				</tr>
+			</table>
+
+			<form th:action="@{/admin/createuser}" th:method="post">
+				<h2>New Student User</h2>
+				<table class="table">
+					<tr align="center">
+						<td>Username</td>
+						<td>Password</td>
+						<td>Confirm Password</td>
+					</tr>
+					<tr align="center">
+						<td><input type="text" name="username" /></td>
+						<td><input type="password" name="password" /></td>
+						<td><input type="password" name="cfmpassword" /></td>
+					</tr>
+					<tr align="center">
+						<td></td>
+						<td><button type="submit" name="confirm" value="yes"
+								class="btn btn-primary">Create Student User</button></td>
+						<td></td>
+					</tr>
+				</table>
+				<input type="hidden" name="type" value="student" /> <input
+					type="hidden" name="id" th:value="${student.studentId}" />
+			</form>
+		</div>
+
+		<div th:if="${type == 'faculty'}">
+
+			<h2>New Faculty Information</h2>
+			<table class="table  ">
+				<tr align="center">
+					<td>Department ID</td>
+					<td>Faculty ID</td>
+					<td>Faculty First Name</td>
+					<td>Faculty Middle Name</td>
+					<td>Faculty Surname</td>
+					<td>Email</td>
+					<td>Mobile Number</td>
+				</tr>
+				<tr>
+					<td th:text="${faculty.department.departmentId}"></td>
+					<td th:text="${faculty.facultyId}"></td>
+					<td th:text="${faculty.firstName}"></td>
+					<td th:text="${faculty.middleName}"></td>
+					<td th:text="${faculty.surname}"></td>
+					<td th:text="${faculty.email}"></td>
+					<td th:text="${faculty.mobileNum}"></td>
+				</tr>
+			</table>
+
+			<form th:action="@{/admin/createuser}" th:method="post">
+				<h2>New Faculty User</h2>
+				<table class="table  ">
+					<tr align="center">
+						<td>Username</td>
+						<td>Password</td>
+						<td>Confirm Password</td>
+					</tr>
+					<tr align="center">
+						<td><input type="text" name="username" /></td>
+						<td><input type="password" name="password" /></td>
+						<td><input type="password" name="cfmpassword" /></td>
+					</tr>
+					<tr align="center">
+						<td></td>
+						<td><button type="submit" name="confirm" value="yes"
+								class="btn btn-primary">Create Faculty User</button></td>
+						<td></td>
+					</tr>
+				</table>
+				<input type="hidden" name="type" value="faculty" /> <input
+					type="hidden" name="id" th:value="${faculty.facultyId}" />
+			</form>
+		</div>
+
+		<div th:if="${type == 'admin'}">
+
+			<h2>New Admin Information</h2>
+			<table class="table  ">
+				<tr align="center">
+					<td>Admin ID</td>
+					<td>Admin First Name</td>
+					<td>Admin Middle Name</td>
+					<td>Admin Surname</td>
+					<td>Email</td>
+					<td>Mobile Number</td>
+				</tr>
+				<tr>
+					<td th:text="${admind.adminId}"></td>
+					<td th:text="${admind.firstName}"></td>
+					<td th:text="${admind.middleName}"></td>
+					<td th:text="${admind.surname}"></td>
+					<td th:text="${admind.email}"></td>
+					<td th:text="${admind.mobileNum}"></td>
+				</tr>
+			</table>
+
+			<form th:action="@{/admin/createuser}" th:method="post">
+				<h2>New Admin User</h2>
+				<table class="table  ">
+					<tr align="center">
+						<td>Username</td>
+						<td>Password</td>
+						<td>Confirm Password</td>
+					</tr>
+					<tr align="center">
+						<td><input type="text" name="username" /></td>
+						<td><input type="password" name="password" /></td>
+						<td><input type="password" name="cfmpassword" /></td>
+					</tr>
+					<tr align="center">
+						<td></td>
+						<td><button type="submit" name="confirm" value="yes"
+								class="btn btn-primary">Create Admin User</button></td>
+						<td></td>
+					</tr>
+				</table>
+				<input type="hidden" name="type" value="admin" /> <input
+					type="hidden" name="id" th:value="${admind.adminId}" />
+			</form>
+		</div>
+
+		<div th:if="${error == 'yes'}">
+			<h2 th:text="${emsg}"></h2>
+		</div>
+
+	</div>
+</body>
+</html>

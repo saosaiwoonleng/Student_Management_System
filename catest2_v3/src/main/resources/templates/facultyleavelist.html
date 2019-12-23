@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Faculty Leave List</title>
+</head>
+<body>
+	<div layout:fragment="content" align="center">
+		<h1>List of all faculty leaves</h1>
+
+		<div th:if="${msg == 'found'}">
+			<div th:if="${sort == 'all'}">
+				<table class="table">
+					<tr align="center">
+						<td>Faculty Leave ID</td>
+						<td>Department</td>
+						<td>Faculty ID</td>
+						<td>Faculty Name</td>
+						<td>Leave Start</td>
+						<td>Leave End</td>
+						<td>Status</td>
+					</tr>
+					<tr align="center" th:each="fl: ${facultyLeavePage.content}">
+						<td><a
+							th:href="@{/admin/viewfacultyleave(viewfacultyleave=${fl.leaveId})}"
+							th:text=${fl.leaveId}></a></td>
+						<td th:text="${fl.faculty.department.departmentName}"></td>
+						<td><a
+							th:href="@{/admin/viewfaculty(viewfaculty=${fl.faculty.facultyId})}"
+							th:text=${fl.faculty.facultyId}></a></td>
+						<td
+							th:text="${fl.faculty.firstName}+' '+${fl.faculty.middleName}+' '+${fl.faculty.surname}"></td>
+						<td th:text="${fl.leaveStart}"></td>
+						<td th:text="${fl.leaveEnd}"></td>
+						<td th:text="${fl.status}"></td>
+					</tr>
+					<tr align="center">
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='approved',size=${facultyLeavePage.size}, page=${pageNumber})}">Approved
+								List</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='pending',size=${facultyLeavePage.size}, page=${pageNumber})}">Pending
+								List</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='rejected',size=${facultyLeavePage.size}, page=${pageNumber})}">Rejected
+								List</a></td>
+					</tr>
+				</table>
+
+				<table class="table">
+					<tr th:if="${facultyLeavePage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/facultyleavelist(sort='all',size=${facultyLeavePage.size}, page=${pageNumber})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==facultyLeavePage.number + 1} ? active"></a>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<form th:action="@{/admin/facultyleavelist}" th:method="post">
+					<br />
+					<h1>Search for approved leave</h1>
+					<table class="table">
+						<tr>
+							<td align="right"><h3>From</h3></td>
+							<td align="left"><h3>To</h3></td>
+						</tr>
+						<tr>
+							<td align="right"><input type="date" name="start" /></td>
+							<td align="left"><input type="date" name="end" /></td>
+						</tr>
+					</table>
+					<input type="hidden" name="sort" value="approved" />
+					<button class="btn btn-success" type="submit" name="button"
+						value="yes">Search Faculty Leave</button>
+				</form>
+			</div>
+
+			<div th:if="${sort == 'pending'}">
+				<table class="table">
+					<tr align="center">
+						<td>Faculty Leave ID</td>
+						<td>Department</td>
+						<td>Faculty ID</td>
+						<td>Faculty Name</td>
+						<td>Leave Start</td>
+						<td>Leave End</td>
+						<td>Status</td>
+					</tr>
+					<tr align="center" th:each="fl: ${facultyLeavePage.content}">
+						<td><a
+							th:href="@{/admin/viewfacultyleave(viewfacultyleave=${fl.leaveId})}"
+							th:text=${fl.leaveId}></a></td>
+						<td th:text="${fl.faculty.department.departmentName}"></td>
+						<td><a
+							th:href="@{/admin/viewfaculty(viewfaculty=${fl.faculty.facultyId})}"
+							th:text=${fl.faculty.facultyId}></a></td>
+						<td
+							th:text="${fl.faculty.firstName}+' '+${fl.faculty.middleName}+' '+${fl.faculty.surname}"></td>
+						<td th:text="${fl.leaveStart}"></td>
+						<td th:text="${fl.leaveEnd}"></td>
+						<td th:text="${fl.status}"></td>
+						<td>
+							<form th:action="@{/admin/approvereject}" th:method="post">
+								<input type="hidden" name="id" th:value="${fl.leaveId}" /> <input
+									type="hidden" name="type" value="fl" />
+								<button class="btn btn-success" type="submit" name="approval"
+									value="yes">Approve</button>
+							</form>
+						</td>
+						<td>
+							<form th:action="@{/admin/approvereject}" th:method="post">
+								<input type="hidden" name="id" th:value="${fl.leaveId}" /> <input
+									type="hidden" name="type" value="fl" />
+								<button class="btn btn-danger" type="submit" name="approval"
+									value="no">Reject</button>
+							</form>
+						</td>
+					</tr>
+					<tr align="center">
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='all',size=${facultyLeavePage.size}, page=${pageNumber})}">All
+								Status</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='approved',size=${facultyLeavePage.size}, page=${pageNumber})}">Approved
+								List</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='rejected',size=${facultyLeavePage.size}, page=${pageNumber})}">Rejected
+								List</a></td>
+					</tr>
+				</table>
+
+				<table class="table">
+					<tr th:if="${facultyLeavePage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/facultyleavelist(sort='pending',size=${facultyLeavePage.size}, page=${pageNumber})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==facultyLeavePage.number + 1} ? active"></a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div th:if="${sort == 'rejected'}">
+				<table class="table">
+					<tr align="center">
+						<td>Faculty Leave ID</td>
+						<td>Department</td>
+						<td>Faculty ID</td>
+						<td>Faculty Name</td>
+						<td>Leave Start</td>
+						<td>Leave End</td>
+						<td>Status</td>
+					</tr>
+					<tr align="center" th:each="fl: ${facultyLeavePage.content}">
+						<td><a
+							th:href="@{/admin/viewfacultyleave(viewfacultyleave=${fl.leaveId})}"
+							th:text=${fl.leaveId}></a></td>
+						<td th:text="${fl.faculty.department.departmentName}"></td>
+						<td><a
+							th:href="@{/admin/viewfaculty(viewfaculty=${fl.faculty.facultyId})}"
+							th:text=${fl.faculty.facultyId}></a></td>
+						<td
+							th:text="${fl.faculty.firstName}+' '+${fl.faculty.middleName}+' '+${fl.faculty.surname}"></td>
+						<td th:text="${fl.leaveStart}"></td>
+						<td th:text="${fl.leaveEnd}"></td>
+						<td th:text="${fl.status}"></td>
+					</tr>
+					<tr align="center">
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='all',size=${facultyLeavePage.size}, page=${pageNumber})}">All
+								Status</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='pending',size=${facultyLeavePage.size}, page=${pageNumber})}">Pending
+								List</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='approved',size=${facultyLeavePage.size}, page=${pageNumber})}">Approved
+								List</a></td>
+					</tr>
+				</table>
+
+				<table class="table">
+					<tr th:if="${facultyLeavePage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/facultyleavelist(sort='rejected',size=${facultyLeavePage.size}, page=${pageNumber})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==facultyLeavePage.number + 1} ? active"></a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div th:if="${sort == 'approved'}">
+				<div th:if="${display == 'yes'}">
+					<h2
+						th:text="'You search for dates from '+ ${start} + ' to ' +${end}"></h2>
+				</div>
+				<table class="table">
+					<tr align="center">
+						<td>Faculty Leave ID</td>
+						<td>Department</td>
+						<td>Faculty ID</td>
+						<td>Faculty Name</td>
+						<td>Leave Start</td>
+						<td>Leave End</td>
+						<td>Status</td>
+					</tr>
+					<tr align="center" th:each="fl: ${facultyLeavePage.content}">
+						<td><a
+							th:href="@{/admin/viewfacultyleave(viewfacultyleave=${fl.leaveId})}"
+							th:text=${fl.leaveId}></a></td>
+						<td th:text="${fl.faculty.department.departmentName}"></td>
+						<td><a
+							th:href="@{/admin/viewfaculty(viewfaculty=${fl.faculty.facultyId})}"
+							th:text=${fl.faculty.facultyId}></a></td>
+						<td
+							th:text="${fl.faculty.firstName}+' '+${fl.faculty.middleName}+' '+${fl.faculty.surname}"></td>
+						<td th:text="${fl.leaveStart}"></td>
+						<td th:text="${fl.leaveEnd}"></td>
+						<td th:text="${fl.status}"></td>
+					</tr>
+					<tr align="center">
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='all',size=${facultyLeavePage.size}, page=${pageNumber})}">All
+								Status</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='pending',size=${facultyLeavePage.size}, page=${pageNumber})}">Pending
+								List</a></td>
+
+						<td colspan="2"><a class="btn btn-primary"
+							th:href="@{/admin/facultyleavelist(sort='rejected',size=${facultyLeavePage.size}, page=${pageNumber})}">Rejected
+								List</a></td>
+					</tr>
+				</table>
+
+				<table class="table">
+					<tr th:if="${facultyLeavePage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/facultyleavelist(sort='approved',size=${facultyLeavePage.size}, page=${pageNumber})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==facultyLeavePage.number + 1} ? active"></a>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<form th:action="@{/admin/facultyleavelist}" th:method="post">
+					<br />
+					<h1>Search for approved leave</h1>
+					<table class="table">
+						<tr>
+							<td align="right"><h3>From</h3></td>
+							<td align="left"><h3>To</h3></td>
+						</tr>
+						<tr>
+							<td align="right"><input type="date" name="start" /></td>
+							<td align="left"><input type="date" name="end" /></td>
+						</tr>
+					</table>
+					<input type="hidden" name="sort" value="approved" />
+					<button class="btn btn-success" type="submit" name="button"
+						value="yes">Search Faculty Leave</button>
+				</form>
+			</div>
+		</div>
+
+		<div th:unless="${msg == 'found'}">
+			<p>No Faculty Leave found</p>
+			<br /> <a class="btn btn-primary"
+				th:href="@{/admin/facultyleavelist(sort='all')}">Back</a>
+		</div>
+
+		<div th:if="${emsg == 'yes'}">
+			<h2>End date cannot be earlier than start date</h2>
+		</div>
+
+		<br />
+		<form th:action="@{/csvfacultyleaves}" th:method="post">
+			<button class="btn btn-success" type="submit" name="approval"
+				value="yes">Download all faculty leaves as CSV</button>
+		</form>
+
+	</div>
+</body>
+</html>

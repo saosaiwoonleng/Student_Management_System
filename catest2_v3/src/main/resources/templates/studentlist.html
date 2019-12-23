@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Student List</title>
+
+</head>
+<body>
+	<div layout:fragment="content" align="center">
+
+		<h1>List of all students</h1>
+
+		<form th:action="@{/admin/studentlist}">
+			<div th:if="${searched == 'null'}">
+				<table class="table">
+					<tr align="center">
+						<th>Student ID</th>
+						<th>Student Name</th>
+						<th>Age</th>
+						<th>Gender</th>
+						<th>Email</th>
+						<th>Mobile Number</th>
+						<th>Address</th>
+					</tr>
+					<tr align="center" th:each="stu: ${studentPage.content}">
+						<td><a
+							th:href="@{/admin/viewstudent(viewstudent=${stu.studentId})}"
+							th:text=${stu.studentId}></a></td>
+						<td
+							th:text="${stu.firstName}+' '+${stu.middleName}+' '+${stu.surname}"></td>
+						<td th:text="${stu.age}"></td>
+						<td th:text="${stu.gender}"></td>
+						<td th:text="${stu.email}"></td>
+						<td th:text="${stu.mobileNum}"></td>
+						<td th:text="${stu.address}"></td>
+					</tr>
+					<tr th:if="${studentPage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/studentlist(size=${studentPage.size}, page=${pageNumber})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==studentPage.number + 1} ? active"></a></td>
+					</tr>
+				</table>
+			</div>
+
+			<div th:unless="${searched == 'null'}">
+				<table class="table" th:if="${found == 'found'}">
+					<tr>
+						<td th:text="'You searched for: '+ ${searched}"></td>
+					</tr>
+					<tr align="center">
+						<td>Student ID</td>
+						<td>Student Name</td>
+						<td>Age</td>
+						<td>Gender</td>
+						<td>Email</td>
+						<td>Mobile Number</td>
+						<td>Address</td>
+					</tr>
+					<tr align="center" th:each="stu: ${studentPage.content}">
+						<td><a
+							th:href="@{/admin/viewstudent(viewstudent=${stu.studentId})}"
+							th:text=${stu.studentId}></a></td>
+						<td
+							th:text="${stu.firstName}+' '+${stu.middleName}+' '+${stu.surname}"></td>
+						<td th:text="${stu.age}"></td>
+						<td th:text="${stu.gender}"></td>
+						<td th:text="${stu.email}"></td>
+						<td th:text="${stu.mobileNum}"></td>
+						<td th:text="${stu.address}"></td>
+					</tr>
+					<tr th:if="${studentPage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/studentlist(size=${studentPage.size}, page=${pageNumber},name=${searched})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==studentPage.number + 1} ? active"></a></td>
+					</tr>
+				</table>
+				<div th:unless="${found == 'found'}">
+					<h2 th:text="'No student found for: ' + ${searched}"></h2>
+				</div>
+				<p>
+					<a class="btn btn-primary" th:href="@{/admin/studentlist}">Return
+						to list of students</a>
+				</p>
+			</div>
+
+
+			<div class="input-group mb-3">
+				<input class="form-control mr-sm-2" type="text" th:name="name"
+					placeholder="Search name/address/email" />
+				<div class="input-group-append">
+					<input class="btn btn-info" type="submit" />
+				</div>
+			</div>
+		</form>
+		<br /> <br />
+		<form th:action="@{/csvstudents}" th:method="post">
+			<button class="btn btn-success" type="submit" name="approval"
+				value="yes">Download all students as CSV</button>
+		</form>
+
+
+	</div>
+
+</body>
+</html>

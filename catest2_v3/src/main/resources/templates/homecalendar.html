@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutguest">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Calendar</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+
+
+<a class="weatherwidget-io" href="https://forecast7.com/en/1d35103d82/singapore/"
+ data-label_1="Singapore" data-label_2="Weather" data-font="Noto Sans" data-theme="sky" 
+ data-basecolor="#5e8dff" data-highcolor="#910000" data-cloudfill="#3ca1c5" >Singapore Weather</a>
+<br>
+<iframe src="https://calendar.google.com/calendar/embed?src=avh3jes1brt4cl2rbcd44lt2ek%40group.calendar.google.com&ctz=Asia%2FSingapore"
+ style="border: 0" width="991" height="600" frameborder="1" scrolling="no"></iframe>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutstudent">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content" align="center">
+	<h2>Student's EduRecord </h2>
+	<table class="table table-hover">
+		<tr>
+			<th>Department Name</th>
+			<th>Course Code</th>
+			<th>Course Name</th>
+			<th>Course Unit</th>
+			<th>Grade</th>			
+
+		</tr>
+		<tr th:each="grade: ${gradeLists}">
+			<td th:text="${grade.course.department.departmentName}" ></td>
+			<td th:text="${grade.course.courseCode}" ></td>
+			<td th:text="${grade.course.courseName}" ></td>
+			<td th:text="${grade.course.courseUnit}" ></td>
+			<td th:text="${grade.grade}" ></td>
+			
+<!-- 			<td th:text="${grade.student.studentId}" ></td> -->
+<!-- 			<td th:text="${grade.gradeId}" ></td> -->
+<!-- 			<td th:text="${grade.grade}" ></td> -->
+<!-- 			<td th:text="${grade.course.courseId}" ></td> -->
+<!-- 			<td th:text="${grade.course.department.departmentName}" ></td> -->
+<!-- 			<td th:text="${grade.course.courseUnit}" ></td> -->
+
+		</tr>
+		
+		<tr>
+			<td align="center"colspan="6">
+				<form th:action="@{/student/calculateGpa/}+${student.studentId}"><input type="submit" value="Calculate GPA"class="btn btn-primary"/></form>
+			</td>
+		</tr>
+		
+		
+		<tr >
+				
+				<td th:if="${Gpa != null}" colspan="6"><b><span th:text="'GPA: '+ ${Gpa}" ></span></b></td>
+		</tr>
+		
+		<tr>
+			<td th:if="${type == 'student'}" align="center" colspan="6">
+				<form th:action="@{/student/home}"><input type="submit"value="Back"class="btn btn-primary"/></form>
+			</td>
+			<td th:if="${type == 'admin'}" align="center"colspan="6">
+				<form th:action="@{/admin/studentlist}"><input type="submit"value="Back to students list"class="btn btn-primary"/></form>
+			</td>
+			<td th:if="${type == 'faculty'}" align="center"colspan="6">
+				<form th:action="@{/faculty/home}"><input type="submit" value="Back to Faculty Home" class="btn btn-primary"/></form>
+			</td>
+		</tr>
+	</table>
+	</div>
+</body>
+</html>

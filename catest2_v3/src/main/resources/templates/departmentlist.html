@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Department List</title>
+
+</head>
+<body>
+	<div layout:fragment="content" align="center">
+
+		<h1>List of all departments</h1>
+
+		<form th:action="@{/admin/departmentlist}">
+			<div th:if="${searched == 'null'}">
+				<table class="table">
+					<tr align="center">
+						<th>Department ID</th>
+						<th>Department Name</th>
+					</tr>
+					<tr align="center" th:each="dept: ${departmentPage.content}">
+						<td><a
+							th:href="@{/admin/viewdepartment(viewdepartment=${dept.departmentId})}"
+							th:text=${dept.departmentId}></a></td>
+						<td th:text="${dept.departmentName}"></td>
+					</tr>
+					<tr th:if="${departmentPage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/departmentlist(size=${departmentPage.size},page=${pageNumber},name=${searched})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==departmentPage.number + 1} ? active"></a>
+						</td>
+					</tr>
+				</table>
+
+			</div>
+
+			<div th:unless="${searched == 'null'}">
+				<table class="table" th:if="${found == 'found'}">
+					<tr>
+						<td th:text="'You searched for: '+ ${searched}"></td>
+					</tr>
+					<tr align="center">
+						<td>Department ID</td>
+						<td>Department Name</td>
+					</tr>
+					<tr align="center" th:each="dept: ${departmentPage.content}">
+						<td><a
+							th:href="@{/admin/viewdepartment(viewdepartment=${dept.departmentId})}"
+							th:text=${dept.departmentId}></a></td>
+						<td th:text="${dept.departmentName}"></td>
+					</tr>
+					<tr th:if="${departmentPage.totalPages > 0}" class="pagination">
+						<td th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/admin/departmentlist(size=${departmentPage.size},page=${pageNumber},name=${searched})}"
+							th:text=${pageNumber}
+							th:class="${pageNumber==departmentPage.number + 1} ? active"></a>
+						</td>
+					</tr>
+				</table>
+				<div th:unless="${found == 'found'}">
+					<h2 th:text="'No student found for: ' + ${searched}"></h2>
+				</div>
+				<p>
+					<a class="btn btn-primary" th:href="@{/admin/departmentlist}">Return
+						to list of departments</a>
+				</p>
+			</div>
+			<div class="input-group mb-3">
+				<input class="form-control mr-sm-2" type="text" th:name="name"
+					placeholder="Search department name" />
+				<div class="input-group-append">
+					<input class="btn btn-info" type="submit" />
+				</div>
+			</div>
+
+		</form>
+		<br /> <br />
+
+		<form th:action="@{/csvdepartments}" th:method="post">
+			<button class="btn btn-success" type="submit" name="approval"
+				value="yes">Download all departments as CSV</button>
+		</form>
+
+	</div>
+
+</body>
+</html>

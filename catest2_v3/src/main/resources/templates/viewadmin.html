@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Admin List</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+<h1>Admin Information</h1>
+
+<div th:if="${msg == 'found'}">
+	<table class="table  ">
+		<tr align="center">
+			<td>Admin ID</td>
+			<td>Admin Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${admind.adminId}" ></td>
+			<td th:text="${admind.firstName}+' '+${admind.middleName}+' '+${admind.surname}"></td>
+			<td th:text="${admind.email}" ></td>
+			<td th:text="${admind.mobileNum}" ></td>
+		</tr>
+    </table>
+    <div align="center">
+    <table>
+    <tr><td>
+    <form th:action="@{/admin/delete(deleteType='admin',id=${admind.adminId})}" th:method="post">
+    <button type="submit" name="confirm" value="no" class="btn btn-primary">Delete</button>
+    </form></td>   
+    <td><form th:action="@{/admin/updateadmin(id=${admind.adminId})}" th:method="post">
+    <button type="submit" name="confirm" value="no" class="btn btn-primary">Update</button>  
+    </form></td></table>
+    <br>
+    <p align="center"><a class="btn btn-primary" th:href="@{/admin/adminlist}">Return to list of admins</a><p>
+</div>
+    
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating admin in database'"></h2>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutfaculty">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>View Grade</title>
+</head>
+<body>  
+<div layout:fragment="content" align="center">
+
+<h2>View Grade of the Student<span th:text="' ' +${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></span></h2>
+<form th:action="@{/faculty/updategrade}" method="post">
+<table class="table">
+	<tr>
+	<td>Grade Id</td>
+	<td>Grade</td>
+	<td>Course Id</td>
+	<td>Course Code</td>
+	<td>Course Name</td>
+	<td>Student Id</td>
+	<td>Student Name</td>
+	<td></td>
+	</tr>
+		<tr>
+			<td><input type="hidden" th:value="${grade.gradeId}" name="id"><span th:text="${grade.gradeId}"></span></td>
+
+<td>
+<div class="dropdown"><select class="btn btn-primary dropdown-toggle" name ="grade">
+
+    <option class="dropdown-item" style="color:white" value="A+">A+</option>
+    <option class="dropdown-item" style="color:white" value="A">A</option>
+    <option class="dropdown-item" style="color:white" value="A-">A-</option>
+    <option class="dropdown-item" style="color:white" value="B+">B+</option>
+    <option class="dropdown-item" style="color:white" value="B">B</option>
+    <option class="dropdown-item" style="color:white" value="B-">B-</option>
+    <option class="dropdown-item" style="color:white" value="C+">C+</option>
+    <option class="dropdown-item" style="color:white" value="C">C</option>
+    <option class="dropdown-item" style="color:white" value="D+">D+</option>
+    <option class="dropdown-item" style="color:white" value="D">D</option>
+    <option class="dropdown-item" style="color:white" value="F">F</option>
+    <option class="dropdown-item" style="color:white" value="Null">Null</option>
+    
+</select></div>
+</td>
+			<td>
+				<a th:href="@{/faculty/viewcourse(facultyviewcourse=${grade.course.courseId})}"
+        		th:text=${grade.course.courseId}></a>
+			</td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${grade.course.courseId})}" th:text="${grade.course.courseCode}"></a></td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${grade.course.courseId})}" th:text="${grade.course.courseName}"></a></td>
+			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${grade.student.studentId})}" th:text=${grade.student.studentId}></a></td>
+			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${grade.student.studentId})}" th:text="${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></a></td>
+			<td><button class="btn btn-primary" type="submit">Save</button></td>
+	</tr>
+</table>
+
+
+</form>
+</div>
+</body>
+</html>

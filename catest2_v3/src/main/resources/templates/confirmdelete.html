@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Confirm Delete</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+	<div th:if="${type == 'department'}">
+		<form
+			th:action="@{/admin/delete(deleteType='department',id=${department.departmentId})}"
+			th:method="post">
+			<h1>Department Information</h1>
+			<table class="table">
+				<tr align="center">
+					<td>Department ID</td>
+					<td>Department Name</td>
+				</tr>
+				<tr align="center">
+					<td th:text="${department.departmentId}"></td>
+					<td th:text="${department.departmentName}"></td>
+				</tr>
+			</table>
+
+			<h2>Warning</h2>
+			<div class="alert alert-warning" role="alert">
+			<p>Deleting the department will delete all
+				courses/faculties/grades/course applications associated with the
+				department</p></div>
+
+			<button type="submit" name="confirm" value="yes"class="btn btn-primary">Confirm</button>
+		</form><br>
+		<p>
+			<a class="btn btn-primary" th:href="@{/admin/departmentlist}">Return to list of
+				departments</a>
+		</p>
+	</div>
+
+	<div th:if="${type == 'course'}">
+		<form
+			th:action="@{/admin/delete(deleteType='course',id=${course.courseId})}"
+			th:method="post">
+			<h1>Course Information</h1>
+			<table class="table">
+				<tr align="center">
+					<td>Department ID</td>
+					<td>Department</td>
+					<td>Course ID</td>
+					<td>Course Code</td>
+					<td>Course Name</td>
+					<td>Course Size</td>
+					<td>Course Unit</td>
+					<td>Faculty ID</td>
+					<td>Faculty Name</td>
+				</tr>
+				<tr align="center">
+					<td th:text="${course.department.departmentId}"></td>
+					<td th:text="${course.department.departmentName}"></td>
+					<td th:text="${course.courseId}"></td>
+					<td th:text="${course.courseCode}"></td>
+					<td th:text="${course.courseName}"></td>
+					<td th:text="${course.courseSize}"></td>
+					<td th:text="${course.courseUnit}"></td>
+					<td th:text="${course.faculty.facultyId}"></td>
+					<td
+						th:text="${course.faculty.firstName}+' '+${course.faculty.middleName}+' '+${course.faculty.surname}"></td>
+				</tr>
+			</table>
+
+			<h2>Warning</h2>
+			<div class="alert alert-warning" role="alert">
+			<p>Deleting the course will delete all grades/course applications
+				associated with the course</p></div>
+
+			<button type="submit" name="confirm" value="yes" class="btn btn-primary">Confirm</button>
+		</form><br>
+		<p>
+			<a class="btn btn-primary" th:href="@{/admin/courselist}">Return to list of courses</a>
+		</p>
+	</div>
+
+	<div th:if="${type == 'courseApplication'}">
+		<form
+			th:action="@{/admin/delete(deleteType='courseApplication',id=${courseApplication.applicationId})}"
+			th:method="post">
+			<h1>Course Application Information</h1>
+			<table class="table">
+				<tr align="center">
+					<td>Application ID</td>
+					<td>Status</td>
+					<td>Department ID</td>
+					<td>Department</td>
+					<td>Course ID</td>
+					<td>Course Code</td>
+					<td>Student ID</td>
+					<td>Student Name</td>
+				</tr>
+				<tr align="center">
+					<td th:text="${courseApplication.applicationId}"></td>
+					<td th:text="${courseApplication.status}"></td>
+					<td th:text="${courseApplication.course.department.departmentId}"></td>
+					<td th:text="${courseApplication.course.department.departmentName}"></td>
+					<td th:text="${courseApplication.course.courseId}"></td>
+					<td th:text="${courseApplication.course.courseCode}"></td>
+					<td th:text="${courseApplication.student.studentId}"></td>
+					<td
+						th:text="${courseApplication.student.firstName}+' '+${courseApplication.student.middleName}+' '+${courseApplication.student.surname}"></td>
+				</tr>
+			</table>
+
+			<h2>Warning</h2>
+			<div class="alert alert-danger" role="alert">
+			<p>Deleting the course application permanently remove it from the
+				database</p></div>
+
+			<button type="submit" name="confirm" value="yes" class="btn btn-primary">Confirm</button>
+		</form><br>
+		<p>
+			<a class="btn btn-primary" th:href="@{/admin/courseapplicationlist}">Return to list of
+				course applications</a>
+		</p>
+	</div>
+
+	<div th:if="${type == 'faculty'}">
+		<form
+			th:action="@{/admin/delete(deleteType='faculty',id=${faculty.facultyId})}"
+			th:method="post">
+			<h1>Faculty Information</h1>
+			<table class="table">
+				<tr align="center">
+					<td>Department ID</td>
+					<td>Department Name</td>
+					<td>Faculty ID</td>
+					<td>Faculty Name</td>
+					<td>Email</td>
+					<td>Mobile Number</td>
+				</tr>
+				<tr align="center">
+					<td th:text="${faculty.department.departmentId}"></td>
+					<td th:text="${faculty.department.departmentName}"></td>
+					<td th:text="${faculty.facultyId}"></td>
+					<td
+						th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+					<td th:text="${faculty.email}"></td>
+					<td th:text="${faculty.mobileNum}"></td>
+				</tr>
+			</table>
+
+			<h2>Courses Assigned</h2>
+			<div th:if="${deletesafe == 'safe'}">
+				<h3>No courses assigned. Safe to delete</h3>
+			</div>
+			<div th:if="${deletesafe == 'unsafe'}">
+				<div class="alert alert-primary" role="alert">There are courses assigned. Unsafe to delete!</div>
+				<table class="table">
+					<tr align="center">
+						<td>Department</td>
+						<td>Course ID</td>
+						<td>Course Code</td>
+						<td>Course Name</td>
+						<td>Course Size</td>
+						<td>Course Unit</td>
+					</tr>
+					<tr align="center" th:each="cse: ${courses}">
+						<td th:text="${cse.department.departmentName}"></td>
+						<td th:text="${cse.courseId}"></td>
+						<td th:text="${cse.courseCode}"></td>
+						<td th:text="${cse.courseName}"></td>
+						<td th:text="${cse.courseSize}"></td>
+						<td th:text="${cse.courseUnit}"></td>
+					</tr>
+				</table>
+			</div>
+
+			<h2>Warning</h2>
+			<div class="alert alert-warning" role="alert">
+			<p>Deleting the faculty if there are courses assigned will delete
+				the courses and grades associated with the faculty</p></div>
+			<div class="alert alert-danger" role="alert"><p>The faculty user account will be deleted as well</p></div>
+
+			<button type="submit" name="confirm" value="yes"class="btn btn-primary">Confirm</button>
+		</form><br>
+		<p>
+			<a class="btn btn-primary" th:href="@{/admin/facultylist}">Return to list of faculties</a>
+		</p>
+	</div>
+
+	<div th:if="${type == 'admin'}">
+		<form
+			th:action="@{/admin/delete(deleteType='admin',id=${admind.adminId})}"
+			th:method="post">
+			<h1>Admin Information</h1>
+			<table class="table">
+				<tr align="center">
+					<td>Admin ID</td>
+					<td>Admin Name</td>
+					<td>Email</td>
+					<td>Mobile Number</td>
+				</tr>
+				<tr align="center">
+					<td th:text="${admind.adminId}"></td>
+					<td
+						th:text="${admind.firstName}+' '+${admind.middleName}+' '+${admind.surname}"></td>
+					<td th:text="${admind.email}"></td>
+					<td th:text="${admind.mobileNum}"></td>
+				</tr>
+			</table>
+
+			<h2>Warning</h2>
+			<div class="alert alert-danger" role="alert">
+			<p>The admin user account will be deleted as well</p></div>
+
+			<button type="submit" name="confirm" value="yes" class="btn btn-primary">Confirm</button>
+		</form><br>
+		<p>
+			<a th:href="@{/admin/adminlist}" class="btn btn-primary">Return to list of admins</a>
+		</p>
+	</div>
+
+
+	<div th:if="${type == 'student'}">
+		<form
+			th:action="@{/admin/delete(deleteType='student',id=${student.studentId})}"
+			th:method="post">
+			<h1>Student Information</h1>
+			<table class="table">
+				<tr align="center">
+					<td>Student ID</td>
+					<td>Student Name</td>
+					<td>Age</td>
+					<td>Gender</td>
+					<td>Email</td>
+					<td>Mobile Number</td>
+					<td>Address</td>
+				</tr>
+				<tr align="center">
+					<td th:text="${student.studentId}"></td>
+					<td
+						th:text="${student.firstName}+' '+${student.middleName}+' '+${student.surname}"></td>
+					<td th:text="${student.age}"></td>
+					<td th:text="${student.gender}"></td>
+					<td th:text="${student.email}"></td>
+					<td th:text="${student.mobileNum}"></td>
+					<td th:text="${student.address}"></td>
+				</tr>
+			</table>
+
+			<h2>Courses Applied</h2>
+			<div th:if="${deletesafe == 'safe'}">
+				<h3>No courses applied</h3>
+			</div>
+			<div th:if="${deletesafe == 'unsafe'}">
+				<div class="alert alert-primary" role="alert">
+				<p>There are courses assigned. Deleting student will delete
+					the applications!</p></div>
+				<table class="table">
+					<tr align="center">
+						<td>Application ID</td>
+						<td>Status</td>
+						<td>Department</td>
+						<td>Course ID</td>
+						<td>Course Code</td>
+					</tr>
+					<tr align="center" th:each="ca: ${courseApplications}">
+						<td th:text="${ca.applicationId}"></td>
+						<td th:text="${ca.status}"></td>
+						<td th:text="${ca.course.department.departmentName}"></td>
+						<td th:text="${ca.course.courseId}"></td>
+						<td th:text="${ca.course.courseCode}"></td>
+					</tr>
+				</table>
+			</div>
+
+			<h2>Warning</h2>
+			<div class="alert alert-warning" role="alert">
+			<p>Deleting the student will delete the course application and
+				grades associated with the student</p></div>
+			<div class="alert alert-danger" role="alert">
+			<p>The student user account will be deleted as well</p></div>
+            
+			<button type="submit" name="confirm" value="yes"class="btn btn-primary">Confirm</button>
+		</form>
+            <br/>
+		<p>
+			<a class="btn btn-primary" th:href="@{/admin/studentlist}">Return to list of students</a>
+		</p>
+	</div>
+
+	<div th:if="${type == 'grade'}">
+		<form
+			th:action="@{/admin/delete(deleteType='grade',id=${grade.gradeId})}"
+			th:method="post">
+			<h1>Grade Information</h1>
+			<table class="table">
+				<tr align="center">
+					<td>Grade ID</td>
+					<td>Grade</td>
+					<td>Course ID</td>
+					<td>Course Code</td>
+					<td>Course Name</td>
+					<td>Student ID</td>
+					<td>Student Name</td>
+				</tr>
+				<tr align="center">
+					<td th:text="${grade.gradeId}"></td>
+					<td th:text="${grade.grade}"></td>
+					<td th:text="${grade.course.courseId}"></td>
+					<td th:text="${grade.course.courseCode}"></td>
+					<td th:text="${grade.course.courseName}"></td>
+					<td th:text="${grade.student.studentId}"></td>
+					<td
+						th:text="${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></td>
+				</tr>
+			</table>
+
+			<h2>Warning</h2><div class="alert alert-danger" role="alert">
+			<p>Deleting the grade will permanently remove it from the
+				database</p></div>
+
+			<button type="submit" name="confirm" value="yes"class="btn btn-primary">Confirm</button>
+		</form> <br/>
+		<p>
+			<a class="btn btn-primary" th:href="@{/admin/gradelist}">Return to list of grades</a>
+		</p>
+	</div>
+</div>
+</body>
+</html>

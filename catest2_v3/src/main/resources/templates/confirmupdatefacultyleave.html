@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Confirm Update Faculty Leave</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+<div>
+<form th:action="@{/admin/updatefacultyleave(id=${facultyLeave.leaveId})}" th:method="post">
+	<h1>Faculty Leave Information</h1>
+	<table class="table  ">
+		<tr align="center">
+			<td>Department ID</td>
+			<td>Department Name</td>
+			<td>Faculty Leave ID</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Leave Start</td>
+			<td>Leave End</td>	
+			<td>Status</td>
+		</tr>
+		<tr align="center">
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${facultyLeave.faculty.department.departmentId})}"
+        		th:text=${facultyLeave.faculty.department.departmentId}></a>
+			</td>
+			<td th:text="${facultyLeave.faculty.department.departmentName}" ></td>
+			<td th:text="${facultyLeave.leaveId}" ></td>
+			<td th:text="${facultyLeave.faculty.facultyId}" ></td>
+			<td th:text="${facultyLeave.faculty.firstName}+' '+${facultyLeave.faculty.middleName}+' '+${facultyLeave.faculty.surname}"></td>
+			<td th:text="${facultyLeave.leaveStart}" ></td>
+			<td th:text="${facultyLeave.leaveEnd}" ></td>
+			<td th:text="${facultyLeave.status}" ></td>
+		</tr>
+	</table>
+	
+	<h1>Edit Information</h1>
+	<table class="table  ">
+		<tr align="center">
+			<td>Faculty Leave ID</td>
+			<td>Faculty Name</td>
+			<td>Leave Start</td>
+			<td>Leave End</td>	
+			<td>Status</td>
+		</tr>
+		<tr align="center">
+			<td th:text="${facultyLeave.leaveId}">Leave ID</td>
+			<td th:text="${facultyLeave.faculty.firstName}+' '+${facultyLeave.faculty.middleName}+' '+${facultyLeave.faculty.surname}"></td>
+			<td><input class="form-control" type="date" name="updatestart" th:value="${facultyLeave.leaveStart}" /></td>
+            <td><input class="form-control" type="date" name="updateend" th:value="${facultyLeave.leaveEnd}" /></td>
+			<td><select class="form-control" name="updatestatus">
+							<option th:value="Pending" th:text="'Pending'"></option>
+							<option th:value="Approved" th:text="'Approved'"></option>
+							<option th:value="Rejected" th:text="'Rejected'"></option>
+					</select></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2>
+    <div class="alert alert-primary" role="alert">
+    <p>Confirm the changes before clicking update</p></div>
+	<input type="hidden" name="updatefid" th:value="${facultyLeave.faculty.facultyId}"/> 
+	<button type="submit" name="confirm" value="yes" class="btn btn-primary" >Update</button>
+</form>
+<br>
+<div th:if="${error == 'yes'}">
+	<p class="alert alert-warning" role="alert" th:text="${emsg}">Error Message</p>
+</div>
+<p><a class="btn btn-primary" th:href="@{/admin/facultyleavelist}">Return to list of faculty leaves</a></p>
+</div>
+</div>
+</body>
+</html>

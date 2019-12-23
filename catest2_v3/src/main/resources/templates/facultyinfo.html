@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutfaculty">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Faculty Info</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+<h2>Faculty Info</h2>
+<form th:object="${faculty}" th:action="@{/faculty/editfaculty}" method="post">
+<table class="table">
+	<tr>
+		<td>Faculty ID</td>
+		<td>First Name</td>
+		<td>Middle Name</td>
+		<td>Surname</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr>
+		<td th:text="*{facultyId}">Faculty Id</td>
+		<td><fieldset><input style="width:120px" class="form-control" type="text" th:field="*{firstName}"></fieldset><span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span></td>
+		<td><fieldset><input style="width:120px" class="form-control" type="text" th:field="*{middleName}"></fieldset><span th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></span></td>
+		<td><fieldset><input style="width:120px" class="form-control" type="text" th:field="*{surname}"><span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span></fieldset></td>
+		<td><fieldset><input style="width:120px" class="form-control" type="text" th:field="*{email}"><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></fieldset></td>
+		<td><fieldset><input style="width:120px" class="form-control" type="text" th:field="*{mobileNum}"></fieldset><span th:if="${#fields.hasErrors('mobileNum')}" th:errors="*{mobileNum}"></span></td>
+	</tr>
+</table>
+
+<button class="btn btn-primary" type="submit">Update Profile</button>
+</form>
+
+
+</div>
+</body>
+</html>

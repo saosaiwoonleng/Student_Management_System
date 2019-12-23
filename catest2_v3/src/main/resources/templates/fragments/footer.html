@@ -1,0 +1,53 @@
+
+<!-- USER Footer -->
+      <footer th:fragment="user" class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; SA49-Team(2) 2019</span>
+          </div>
+        </div>
+
+      <script id="dsq-count-scr" src="//startbootstrap.disqus.com/count.js" async type="c952728c0e421f792cf83698-text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous" type="c952728c0e421f792cf83698-text/javascript"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous" type="c952728c0e421f792cf83698-text/javascript"></script>
+<script type="c952728c0e421f792cf83698-text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="c952728c0e421f792cf83698-text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+<script src="/assets/js/scripts.js" type="c952728c0e421f792cf83698-text/javascript"></script>
+<script type="c952728c0e421f792cf83698-text/javascript">
+    $("#desktopToggle").on('click', function(e) {
+      e.preventDefault();
+      $(".iframe-preview").removeClass("iframe-preview-mobile");
+    });
+    $("#mobileToggle").on('click', function(e) {
+      e.preventDefault();
+      $(".iframe-preview").addClass("iframe-preview-mobile");
+    });
+  </script>
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="c952728c0e421f792cf83698-|49" defer=""></script>
+<script>
+var dt = new Date();
+document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"-"+ (("0"+(dt.getMonth()+1)).slice(-2)) +"-"+ (dt.getFullYear()); 
+document.getElementById("datetime2").innerHTML = (("0"+dt.getHours()).slice(-2)) +":"+ (("0"+dt.getMinutes()).slice(-2));
+</script>
+      </footer>
+      <!-- End of USER Footer -->
+
+<!-- GUEST Footer -->
+      <footer th:fragment="guest" class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; SA49-Team(2) 2019</span>
+          </div>
+        </div>
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
+<script>
+var dt = new Date();
+document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"-"+ (("0"+(dt.getMonth()+1)).slice(-2)) +"-"+ (dt.getFullYear()); 
+document.getElementById("datetime2").innerHTML = (("0"+dt.getHours()).slice(-2)) +":"+ (("0"+dt.getMinutes()).slice(-2));
+</script>
+        
+        
+        </footer>
+<!-- End of GUEST Footer -->

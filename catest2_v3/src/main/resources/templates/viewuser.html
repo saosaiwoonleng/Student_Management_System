@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutadmin">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>View User</title>
+</head>
+<body>
+<div layout:fragment="content" align="center">
+
+<h1>User Information</h1>
+
+<div th:if="${msg == 'found'}">
+<div th:if="${type == 'student'}"> 
+
+<table class="table">
+		<tr>
+			<td>User ID</td>
+			<td>Username</td>
+			<td>Password</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+			<td>Age</td>
+			<td>Gender</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+			<td>Address</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${user.userId}" ></td>
+			<td th:text="${user.userName}" ></td>
+			<td th:text="${user.password}" ></td>
+			<td th:text="${student.studentId}" ></td>
+			<td th:text="${student.firstName}+' '+${student.middleName}+' '+${student.surname}"></td>
+			<td th:text="${student.age}" ></td>
+			<td th:text="${student.gender}" ></td>
+			<td th:text="${student.email}" ></td>
+			<td th:text="${student.mobileNum}" ></td>
+			<td th:text="${student.address}" ></td>
+		</tr>
+    </table>
+    
+<form th:action="@{/admin/delete(deleteType='user',id=${user.userId})}" th:method="post">
+    <button type="submit" name="confirm" value="no">Delete user account</button>
+</form>
+<form th:action="@{/admin/updateuser(id=${user.userId})}" th:method="post">
+    <button type="submit" name="confirm" value="no">Update user account</button>
+</form>
+</div>
+
+<div th:if="${type == 'faculty'}"> 
+<table class="table">
+		<tr>
+			<td>User ID</td>
+			<td>Username</td>
+			<td>Password</td>
+			<td>Department ID</td>
+			<td>Department Name</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr>
+			<td th:text="${user.userId}" ></td>
+			<td th:text="${user.userName}" ></td>
+			<td th:text="${user.password}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${faculty.department.departmentId})}"
+        		th:text=${faculty.department.departmentId}></a>
+			</td>
+			<td th:text="${faculty.department.departmentName}" ></td>
+			<td th:text="${faculty.facultyId}" ></td>
+			<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+			<td th:text="${faculty.email}" ></td>
+			<td th:text="${faculty.mobileNum}" ></td>
+		</tr>
+    </table>
+<form th:action="@{/admin/delete(deleteType='user',id=${user.userId})}" th:method="post">
+    <button type="submit" name="confirm" value="no">Delete user account</button>
+</form>
+<form th:action="@{/admin/updateuser(id=${user.userId})}" th:method="post">
+    <button type="submit" name="confirm" value="no">Update user account</button>
+</form>
+</div>
+
+<div th:if="${type == 'admin'}"> 
+
+<table class="table">
+		<tr align="center">
+			<td>User ID</td>
+			<td>Username</td>
+			<td>Password</td>
+			<td>Admin ID</td>
+			<td>Admin Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${user.userId}" ></td>
+			<td th:text="${user.userName}" ></td>
+			<td th:text="${user.password}" ></td>
+			<td th:text="${admind.adminId}" ></td>
+			<td th:text="${admind.firstName}+' '+${admind.middleName}+' '+${admind.surname}"></td>
+			<td th:text="${admind.email}" ></td>
+			<td th:text="${admind.mobileNum}" ></td>
+		</tr>
+</table>
+<table><tr><td>
+<form th:action="@{/admin/delete(deleteType='user',id=${user.userId})}" th:method="post">
+    <button class="btn btn-primary" type="submit" name="confirm" value="no">Delete user account</button>
+</form></td><td>
+<form th:action="@{/admin/updateuser(id=${user.userId})}" th:method="post">
+    <button class="btn btn-primary" type="submit" name="confirm" value="no">Update user account</button>
+</form></td></tr>
+</table>
+</div>
+   
+</div>
+
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating user in database'"></h2>
+</div>
+
+<p><a class="btn btn-primary" th:href="@{/admin/userlist}">Return to list of users</a></p>
+</div>
+</body>
+</html>

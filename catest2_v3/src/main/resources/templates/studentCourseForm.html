@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutstudent">
+<head>
+<meta charset="ISO-8859-1">
+<link href="/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>Course Form</title>
+</head>
+<body>
+	<div layout:fragment="content" align="center">
+
+		<h2>Available Courses Listing Table</h2>
+
+		<table class="table">
+			<tr>
+				<td>Department</td>
+				<td>Course Code</td>
+				<td>Course Name</td>
+				<td>Course StartDate</td>
+				<td>Course End Date</td>
+				<td>Course Unit</td>
+				<td>Course Size</td>
+			</tr>
+
+			<tr th:each="ca: ${courseLists}">
+				<td th:text="${ca.department.departmentName}"></td>
+				<td th:text="${ca.courseCode}"></td>
+				<td th:text="${ca.courseName}"></td>
+				<td th:text="${ca.courseStart}"></td>
+				<td th:text="${ca.courseEnd}"></td>
+				<td th:text="${ca.courseUnit}"></td>
+				<td th:text="${ca.courseSize}"></td>
+
+				<td><form th:action="@{/student/courseDetails/}+${ca.courseId}">
+						<input type="submit" value="Details" class="btn btn-primary" />
+					</form></td>
+			</tr>
+
+			<tr>
+				<td><form th:action="@{/student/courseapplicationlist/}">
+						<input type="submit" value=" Show Applied Courses"
+							class="btn btn-primary" />
+					</form></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
